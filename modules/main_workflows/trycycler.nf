@@ -13,8 +13,8 @@ nextflow.enable.dsl = 2
 include { trycycler_cluster } from '../tools/trycycler/trycycler'
 include { trycycler_reconcile } from '../tools/trycycler/trycycler'
 include { trycycler_msa } from '../tools/trycycler/trycycler'
-include { trycycler_cluster } from '../tools/trycycler/trycycler'
-include { trycycler_cluster } from '../tools/trycycler/trycycler'
+include { trycycler_partition } from '../tools/trycycler/trycycler'
+include { trycycler_consensus } from '../tools/trycycler/trycycler'
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */

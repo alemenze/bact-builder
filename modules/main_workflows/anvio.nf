@@ -10,7 +10,7 @@ nextflow.enable.dsl = 2
 /* --              IMPORT MODULES              -- */
 ////////////////////////////////////////////////////
 
-include{ make_cogs } from '../tools/anvio/anvio'
+include { make_cogs } from '../tools/anvio/anvio'
 include { make_genome_db } from '../tools/anvio/anvio'
 include { annotate_cogs } from '../tools/anvio/anvio'
 include { combine } from '../tools/anvio/anvio'

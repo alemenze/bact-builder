@@ -48,7 +48,7 @@ process annotate_cogs{
     tag "${meta}"
     label 'process_medium'
 
-    publishDir "${params.outdir}/anvio/dbs_cogs/${meta}",
+    publishDir "${params.outdir}/anvio/db_cogs/${meta}",
         mode: "copy",
         overwrite: true,
         saveAs: { filename -> filename }
@@ -66,7 +66,7 @@ process annotate_cogs{
     script:
         """
         tar xvf $cogs
-        anvi-run-ncbi-cogs -c ${meta} --num-threads ${task.cpus} --cog-data-dir cog_dir
+        anvi-run-ncbi-cogs -c $db --num-threads ${task.cpus} --cog-data-dir cog_dir
         echo -e ${meta},${meta}.db | tr ',' '\\t' > ${meta}.txt
         """
 }
@@ -143,7 +143,7 @@ process summarize{
         path(combined)
 
     output:
-        path("PROJECT_SUMMARY", type:'dir'), emit: summary
+        path("PROJECT_SUMMARY"), emit: summary
 
     script:
         """
