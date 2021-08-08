@@ -8,7 +8,7 @@ process make_cogs{
     tag "${meta}"
     label 'process_medium'
 
-    container "meren/anvio:7"
+    container "quay.io/fhcrc-microbiome/anvio:7"
 
     output:
         path("cog_dir.tar"), emit: cog_index
@@ -30,7 +30,7 @@ process make_genome_db{
         overwrite: true,
         saveAs: { filename -> filename }
 
-    container "meren/anvio:7"
+    container "quay.io/fhcrc-microbiome/anvio:7"
 
     input:
         tuple val(meta), path(assembly)
@@ -53,7 +53,7 @@ process annotate_cogs{
         overwrite: true,
         saveAs: { filename -> filename }
 
-    container "meren/anvio:7"
+    container "quay.io/fhcrc-microbiome/anvio:7"
 
     input:
         tuple val(meta), path(db)
@@ -79,7 +79,7 @@ process combine{
         overwrite: true,
         saveAs: { filename -> filename }
 
-    container "meren/anvio:7"
+    container "quay.io/fhcrc-microbiome/anvio:7"
 
     input:
         tuple val(meta), path(db)
@@ -105,7 +105,7 @@ process pangenome{
         overwrite: true,
         saveAs: { filename -> filename }
 
-    container "meren/anvio:7"
+    container "quay.io/fhcrc-microbiome/anvio:7"
 
     input:
         path(combined)
@@ -136,7 +136,7 @@ process summarize{
         overwrite: true,
         saveAs: { filename -> filename }
 
-    container "meren/anvio:7"
+    container "quay.io/fhcrc-microbiome/anvio:7"
 
     input:
         path(pan_db)
