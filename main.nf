@@ -121,35 +121,30 @@ include { Kraken } from './modules/subworkflows/kraken'
 // Full workflow demultiplexing through Trycycler
 workflow {
     Demux_Full(
-        guppy_dirs
+        guppy_dirs,
+        ont_metadata
     )
 
-    ch_demuxed = ont_metadata.join(Demux_Full.out, by: [0,1])
-    ch_demuxed_filtered = ch_demuxed
-        .filter({ guppy, bc, id, reads -> reads.size() > params.genome_size_bytes*95}) //Each tuple should start as guppy_dir, barcode, sample_id, reads
-        .map{ it -> tuple(it[2], it[3]) } //And end as id, reads
-
-
     Kraken(
-        ch_demuxed_filtered,
+        Demux_Full.out,
         'Kraken'
     )
 
     Assembly_Full(
-        ch_demuxed_filtered
+        Demux_Full.out
     )
 
     Assembly_Full.out.map{ it -> tuple( it[0], it[1].collect())}
             .set{trycycler_input}
 
-    ch_trycycler = ch_demuxed_filtered.join(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
+    ch_trycycler = Demux_Full.out.join(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
 
     Trycycler_Full(
         ch_trycycler
     )
 
     ch_polishing = Trycycler_Full.out
-        .join(ch_demuxed_filtered, by:0) //And now should be ID, ONT consensus, ONT reads
+        .join(Demux_Full.out, by:0) //And now should be ID, ONT consensus, ONT reads
 
     Polish(
         ch_polishing,

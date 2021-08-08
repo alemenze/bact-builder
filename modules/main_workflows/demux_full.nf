@@ -20,18 +20,16 @@ include { Demux } from '../subworkflows/demux'
 workflow Demux_Full {
     take:
         guppy_dir
+        ont_metadata
     
     main:
 
         Demux(
-            guppy_dir
+            guppy_dir,
+            ont_metadata
         )
         
-        demuxed_reads=Channel.empty()
-        demuxed_reads=guppy_dir
-            .combine(Demux.out.reads)
-
     emit:
-        demuxed_reads
+        Demux.out
 } 
 

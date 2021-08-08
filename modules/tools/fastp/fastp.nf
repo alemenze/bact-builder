@@ -8,7 +8,7 @@ process fastp {
     tag "${meta}"
     label 'process_low'
 
-    publishDir "${params.outdir}/fastp/${run}/${type}",
+    publishDir "${params.outdir}/fastp/${type}",
         mode: "copy",
         overwrite: true,
         saveAs: { filename -> filename }
@@ -16,7 +16,7 @@ process fastp {
     container "biocontainers/fastp:v0.20.1_cv1"
 
     input:
-        tuple val(meta), path(reads), val(run)
+        tuple val(meta), path(reads)
         val(type)
     
     output:
