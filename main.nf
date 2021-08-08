@@ -156,7 +156,7 @@ workflow {
         illumina_metadata
     )
 
-    //Anvio(
-    //    Polish.out
-    //)
+    Anvio(
+        Polish.out
+    )
 }

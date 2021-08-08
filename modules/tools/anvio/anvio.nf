@@ -60,7 +60,7 @@ process annotate_cogs{
         path(cogs)
 
     output:
-        tuple val(meta), path("*.db"), emit: db_cog
+        tuple val(meta), path('$db'), emit: db_cog
         path('*.txt'), emit: db_txt
     
     script:

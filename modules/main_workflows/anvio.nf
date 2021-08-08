@@ -37,7 +37,7 @@ workflow Anvio {
         )
 
         combine(
-            annotate_cogs.out.db_cog
+            annotate_cogs.out.db_cog,
             annotate_cogs.out.db_txt.collect()
         )
 
@@ -46,7 +46,7 @@ workflow Anvio {
         )
 
         summarize(
-            pangenome.out.pan_db
+            pangenome.out.pan_db,
             combine.out.combined
         )
 
