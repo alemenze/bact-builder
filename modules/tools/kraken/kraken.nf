@@ -45,6 +45,7 @@ process Kraken2 {
 process Kraken2_db_build {
 
     container "alemenze/kraken2-docker"
+    label 'process_low'
 
     input:
         path(kraken)
@@ -62,6 +63,7 @@ process Kraken2_db_build {
 process Krona {
 
     container "alemenze/kraken2-docker"
+    label 'process_low'
 
     publishDir "${params.outdir}/kraken2_krona/${meta}",
         mode: "copy",
