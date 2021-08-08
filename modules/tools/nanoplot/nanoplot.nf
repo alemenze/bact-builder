@@ -8,7 +8,7 @@ process nanoplot {
     tag "${sequencing_summary}"
     label 'process_low'
 
-    publishDir "${params.outdir}/nanoplot/${type}/${meta}",
+    publishDir "${params.outdir}/nanoplot/${run}/${type}/${meta}",
         mode: "copy",
         overwrite: true,
         saveAs: { filename -> filename }
@@ -16,7 +16,7 @@ process nanoplot {
     container "staphb/nanoplot:1.33.0"
 
     input:
-        tuple val(meta), path(reads)
+        tuple val(meta), path(reads), val(run)
         val(type)
     
     output:

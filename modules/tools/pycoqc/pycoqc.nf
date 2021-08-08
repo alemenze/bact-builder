@@ -8,7 +8,7 @@ process pycoqc {
     tag "${sequencing_summary}"
     label 'process_low'
 
-    publishDir "${params.outdir}/pycoqc/${type}",
+    publishDir "${params.outdir}/pycoqc/${run}/${type}",
         mode: "copy",
         overwrite: true,
         saveAs: { filename -> filename }
@@ -16,7 +16,7 @@ process pycoqc {
     container "quay.io/biocontainers/pycoqc:2.5.0.23--py_0"
 
     input:
-        path(sequencing_summary)
+        tuple path(sequencing_summary), val(run)
         val(type)
 
     output:

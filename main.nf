@@ -112,6 +112,7 @@ include { Assembly_Full } from './modules/main_workflows/assembly_full'
 include { Trycycler_Full } from './modules/main_workflows/trycycler'
 include { Polish } from './modules/main_workflows/polish'
 include { Anvio } from './modules/main_workflows/anvio'
+include { Kraken } from './modules/subworkflows/kraken'
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -127,6 +128,12 @@ workflow {
     ch_demuxed_filtered = ch_demuxed
         .filter({ guppy, bc, id, reads -> reads.size() > params.genome_size_bytes*95}) //Each tuple should start as guppy_dir, barcode, sample_id, reads
         .map{ it -> tuple(it[2], it[3]) } //And end as id, reads
+
+
+    Kraken(
+        ch_demuxed_filtered,
+        'Kraken'
+    )
 
     Assembly_Full(
         ch_demuxed_filtered

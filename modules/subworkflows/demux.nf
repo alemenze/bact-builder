@@ -40,8 +40,7 @@ workflow Demux {
     )
     ch_ont_fastq = Channel.empty()
     ch_ont_fastq = guppy_basecaller.out.fastq
-      .flatten()
-      .map { it -> tuple(it.baseName, it) }
+      .map { it -> tuple(it[0].baseName, it[0], it[1]) }
     fastp(
       ch_ont_fastq,
       'guppy_qc'

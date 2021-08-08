@@ -7,7 +7,7 @@ nextflow.enable.dsl = 2
 process guppy_basecaller {
     tag "${reads}"
     
-    publishDir "${params.outdir}/guppy",
+    publishDir "${params.outdir}/guppy/${reads}",
         mode: "copy",
         overwrite: true,
         saveAs: { filename -> filename }
@@ -22,9 +22,9 @@ process guppy_basecaller {
         path(reads)
 
     output:
-        path("fastq/*.fastq.gz"), emit: fastq
+        tuple path("fastq/*.fastq.gz"),val('${reads}'), emit: fastq
         path "*.log", emit: log
-        path "*.txt", emit: sequencing_summary
+        tuple path("*.txt"),val('${reads}'), emit: sequencing_summary
         path "*.js", emit: telemetry
 
     script:

@@ -18,5 +18,5 @@ DONT USE SPACES!
 ## Example Commands
 ### Slurm HPC execution
 ```
-
+nohup nextflow -bg run /alemenze/placeholder_name -r main --samplesheet ./example_metadata.csv --outdir ./test -profile slurm --node_partition='p_lemenzad -M amareln' --gpu_active --gpus 1 > test.txt
 ```

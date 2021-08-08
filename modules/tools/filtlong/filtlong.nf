@@ -8,7 +8,7 @@ process filtlong{
     tag "${meta}"
     label 'process_medium'
 
-    publishDir "${params.outdir}/filtlong",
+    publishDir "${params.outdir}/filtlong/${run}",
         mode: "copy",
         overwrite: true,
         saveAs: { filename -> filename }
@@ -16,7 +16,7 @@ process filtlong{
     container "nanozoo/filtlong:0.2.0--0c4cbe3"
 
     input:
-        tuple val(meta), path(reads)
+        tuple val(meta), path(reads), val(run)
     
     output:
         tuple val(meta), path("*.trim.fastq.gz"), emit: fastq
