@@ -29,9 +29,9 @@ process miniasm_assembly {
     
     script:
         """
-        minimap2 -x ava-ont -t $params.threads $reads $reads > overlaps.paf
+        minimap2 -x ava-ont -t $task.cpus $reads $reads > overlaps.paf
         miniasm -f $reads overlaps.paf > unpolished.gfa
-        minipolish --threads $params.threads $reads unpolished.gfa > miniasm.assembly.gfa
+        minipolish --threads $task.cpus $reads unpolished.gfa > miniasm.assembly.gfa
         awk '/^S/{print ">"\$2"\\n"\$3}' miniasm.assembly.gfa > miniasm.assembly.fasta
         """
 }

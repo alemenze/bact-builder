@@ -30,7 +30,7 @@ process guppy_basecaller {
     script:
         flowcell=params.flowcell ? "--flowcell $params.flowcell --kit $params.kit": ""
         barcode_kit=params.barcode_kit ? "--barcode_kits '$params.barcode_kit'": ""
-        cpu_opts=params.cpus ? "--num_callers $params.cpus --cpu_threads_per_caller $params.threads": ""
+        cpu_opts=params.cpus ? "--num_callers $params.cpus --cpu_threads_per_caller 1": ""
         if (params.gpu_active){
             gpu_opts = "--gpu_runners_per_device $params.gpus -x cuda:all:100% "
         } else {

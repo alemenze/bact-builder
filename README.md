@@ -12,7 +12,8 @@ This workflow is built to provide
 
 ## Metadata
 DONT USE SPACES!
-Dont use dashes in directory names either
+Dont use dashes in directory names either- well you can but dont use 2
+Kraken can throw error if you run too many too fast without it downloading the ref
 
 ## Summary Features:
 

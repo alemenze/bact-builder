@@ -29,7 +29,7 @@ process flye_assembly {
     
     script:
         """
-        flye --nano-raw $reads --genome-size $params.assembly_genome_size --plasmids --o ${meta}_flye --threads $params.threads
+        flye --nano-raw $reads --genome-size $params.assembly_genome_size --plasmids --o ${meta}_flye --threads $task.cpus
         """
 
 }
