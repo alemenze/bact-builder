@@ -12,6 +12,7 @@ This workflow is built to provide
 
 ## Metadata
 DONT USE SPACES!
+Dont use dashes in directory names either
 
 ## Summary Features:
 

@@ -24,7 +24,7 @@ process guppy_basecaller {
     output:
         path("fastq/*.fastq.gz"), emit: fastq
         path "*.log", emit: log
-        tuple path("*.txt"),val('${reads}'), emit: sequencing_summary
+        tuple path("*.txt"),val("${reads}"), emit: sequencing_summary
         path "*.js", emit: telemetry
 
     script:
@@ -53,7 +53,7 @@ process guppy_basecaller {
             for dir in barcode*/
             do
                 dir=\${dir%*/}
-                cat \$dir/*.fastq.gz > ./fastq/\$reads_\$dir.fastq.gz
+                cat \$dir/*.fastq.gz > ./fastq/${reads}--\$dir.fastq.gz
             done
         else
             cat *.fastq.gz > ./fastq/output.fastq.gz

@@ -43,11 +43,11 @@ workflow Demux {
     ch_ont_fastq = Channel.empty()
     ch_ont_fastq = guppy_basecaller.out.fastq
       .flatten()
-      .map { it -> tuple(it.baseName.substring(0, it.baseName.lastIndexOf('_')),it.baseName.substring(it.baseName.lastIndexOf('_'),it.baseName.lastIndexOf('.')), it) } //dir,bc,sample
+      .map { it -> tuple(it.baseName.substring(0, it.baseName.lastIndexOf('--')),it.baseName.substring(it.baseName.lastIndexOf('--')+1,it.baseName.lastIndexOf('.')), it) } //dir,bc,sample
 
     ch_demuxed = ont_metadata.join(ch_ont_fastq, by: [0,1])//dir,bc,id with dir, bc, sample to become dir, bc, id, sample. 
     ch_demuxed_filtered = ch_demuxed
-        .filter({ guppy, bc, id, reads -> reads.size() > params.genome_size_bytes*95}) //Each tuple should start as guppy_dir, barcode, sample_id, reads
+        .filter{ guppy, bc, id, reads -> reads.size() >> params.genome_size_bytes*95} //Each tuple should start as guppy_dir, barcode, sample_id, reads
         .map{ it -> tuple(it[2], it[3]) } //And end as id, reads
 
     fastp(
