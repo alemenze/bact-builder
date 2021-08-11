@@ -43,7 +43,7 @@ workflow Demux {
     ch_ont_fastq = Channel.empty()
     ch_ont_fastq = guppy_basecaller.out.fastq
       .flatten()
-      .map { it -> tuple(it.baseName.substring(0, it.baseName.lastIndexOf('--')),it.baseName.substring(it.baseName.lastIndexOf('--')+1,it.baseName.lastIndexOf('.')), it) } //dir,bc,sample
+      .map { it -> tuple(it.baseName.substring(0, it.baseName.lastIndexOf('--')),it.baseName.substring(it.baseName.lastIndexOf('--')+2,it.baseName.lastIndexOf('.')), it) } //dir,bc,sample
 
     ch_demuxed = ont_metadata.join(ch_ont_fastq, by: [0,1])//dir,bc,id with dir, bc, sample to become dir, bc, id, sample. 
     ch_demuxed_filtered = ch_demuxed

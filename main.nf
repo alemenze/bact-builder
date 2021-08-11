@@ -94,7 +94,7 @@ Channel
 Channel
     .fromPath(params.samplesheet)
     .splitCsv(header:true)
-    .map{ row -> tuple(row.fast5_dirname, row.barcode, row.sample_id)}
+    .map{ row -> tuple(row.fast5_dirname, row.ont_barcode, row.sample_id)}
     .set { ont_metadata }
 
 Channel
