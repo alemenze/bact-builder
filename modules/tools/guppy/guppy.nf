@@ -30,10 +30,11 @@ process guppy_basecaller {
     script:
         flowcell=params.flowcell ? "--flowcell $params.flowcell --kit $params.kit": ""
         barcode_kit=params.barcode_kit ? "--barcode_kits '$params.barcode_kit'": ""
+        cpu_opts=params.cpus ? "--num_callers $params.cpus --cpu_threads_per_caller $params.threads": ""
         if (params.gpu_active){
             gpu_opts = "--gpu_runners_per_device $params.gpus -x cuda:all:100% "
         } else {
-            gpu_opts = "--num_callers $task.cpus --cpu_threads_per_caller 1"
+            gpu_opts = ""
         }
         """
         guppy_basecaller --input_path $reads \\
@@ -42,6 +43,7 @@ process guppy_basecaller {
             --compress_fastq \\
             $flowcell \\
             $barcode_kit \\
+            $cpu_opts \\
             $gpu_opts
             
         # have to combine fastqs
