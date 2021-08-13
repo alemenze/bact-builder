@@ -6,7 +6,7 @@ nextflow.enable.dsl=2
 // Process definition
 process flye_assembly {
     tag "${meta}"
-    label 'process_high'
+    label 'process_overkill'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1
