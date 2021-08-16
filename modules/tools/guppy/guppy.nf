@@ -32,7 +32,7 @@ process guppy_basecaller {
         barcode_kit=params.barcode_kit ? "--barcode_kits '$params.barcode_kit'": ""
         cpu_opts=params.cpus ? "--num_callers $params.cpus --cpu_threads_per_caller $params.threads": ""
         if (params.gpu_active){
-            gpu_opts = "--gpu_runners_per_device $params.gpus -x cuda:all:100% "
+            gpu_opts = "--gpu_runners_per_device $params.gpus -x cuda:all:100% --chunk_size 1000 --chunks_per_runner 256"
         } else {
             gpu_opts = ""
         }

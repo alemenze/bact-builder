@@ -3,9 +3,10 @@
                               (╯°□°)╯︵ ┻━┻
 
 ========================================================================================
-                WORKFLOW
+                Workflow for assembling bacterial de novo genomes
+                With multiple layers of assembly and consensus
 ========================================================================================
-                  https://github.com/alemenze/####
+                  https://github.com/alemenze/Bact-Builder
 */
 
 nextflow.enable.dsl = 2
@@ -15,8 +16,8 @@ def helpMessage(){
 
     Usage:
     
-        nextflow run alemenze/#### \
-
+        nextflow run alemenze/Bact-Builder \
+        --samplesheet ./metadata.csv
         -profile singularity
 
     Mandatory for full workflow:
@@ -84,24 +85,82 @@ if (params.help) {
 ////////////////////////////////////////////////////
 if (params.samplesheet) {file(params.samplesheet, checkIfExists: true)} else { exit 1, 'Samplesheet file not specified!'}
 
-Channel
-    .fromPath(params.samplesheet)
-    .splitCsv(header:true)
-    .map{ row -> tuple(row.fast5_dir)}
-    .unique()
-    .set { guppy_dirs }
+//Full Workflow Params
+if (!params.skip_demux && !params.only_demux && !params.only_assembly && !params.only_clustering && !params.demux_assembly){
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.fast5_dir)}
+        .unique()
+        .set { guppy_dirs }
 
-Channel
-    .fromPath(params.samplesheet)
-    .splitCsv(header:true)
-    .map{ row -> tuple(row.fast5_dirname, row.ont_barcode, row.sample_id)}
-    .set { ont_metadata }
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.fast5_dirname, row.ont_barcode, row.sample_id)}
+        .set { ont_metadata }
 
-Channel
-    .fromPath(params.samplesheet)
-    .splitCsv(header:true)
-    .map{ row -> tuple(row.sample_id, file(row.illumina_r1), file(row.illumina_r2))}
-    .set { illumina_metadata }
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.sample_id, file(row.illumina_r1), file(row.illumina_r2))}
+        .set { illumina_metadata }
+}
+
+//Skip Demux
+if (params.skip_demux){
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.sample_id, row.ont_fastq)}
+        .set { ont_metadata }
+
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.sample_id, file(row.illumina_r1), file(row.illumina_r2))}
+        .set { illumina_metadata }
+}
+
+//Only Demux
+if (params.only_demux){
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.fast5_dir)}
+        .unique()
+        .set { guppy_dirs }
+
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.fast5_dirname, row.ont_barcode, row.sample_id)}
+        .set { ont_metadata }
+}
+
+//Only Assembly
+if (params.only_assembly){
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.sample_id, row.ont_fastq)}
+        .set { ont_metadata }
+}
+
+//Only Polish
+if (params.only_polish){
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.sample_id, row.ont_fastq)}
+        .set { ont_metadata }
+
+    Channel
+        .fromPath(params.samplesheet)
+        .splitCsv(header:true)
+        .map{ row -> tuple(row.sample_id, file(row.illumina_r1), file(row.illumina_r2))}
+        .set { illumina_metadata }
+}
 
 
 ////////////////////////////////////////////////////
@@ -118,40 +177,102 @@ include { Kraken } from './modules/subworkflows/kraken'
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
 
-// Full workflow demultiplexing through Trycycler
 workflow {
-    Demux_Full(
-        guppy_dirs,
-        ont_metadata
-    )
+    //Full Workflow
+    if (!params.skip_demux && !params.only_demux){
+        Demux_Full(
+            guppy_dirs,
+            ont_metadata
+        )
 
-    Kraken(
-        Demux_Full.out,
-        'Kraken'
-    )
+        Kraken(
+            Demux_Full.out,
+            'Kraken'
+        )
 
-    Assembly_Full(
-        Demux_Full.out
-    )
+        Assembly_Full(
+            Demux_Full.out
+        )
 
-    Assembly_Full.out.map{ it -> tuple( it[0], it[1].collect())}
-            .set{trycycler_input}
+        Assembly_Full.out.map{ it -> tuple( it[0], it[1].collect())}
+                .set{trycycler_input}
 
-    ch_trycycler = Demux_Full.out.join(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
+        ch_trycycler = Demux_Full.out.join(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
 
-    Trycycler_Full(
-        ch_trycycler
-    )
+        Trycycler_Full(
+            ch_trycycler
+        )
 
-    ch_polishing = Trycycler_Full.out
-        .join(Demux_Full.out, by:0) //And now should be ID, ONT consensus, ONT reads
+        ch_polishing = Trycycler_Full.out
+            .join(Demux_Full.out, by:0) //And now should be ID, ONT consensus, ONT reads
 
-    Polish(
-        ch_polishing,
-        illumina_metadata
-    )
+        Polish(
+            ch_polishing,
+            illumina_metadata
+        )
+        if(params.anvio_run){
+            Anvio(
+                Polish.out
+            )
+        }
+        
+    }
 
-    Anvio(
-        Polish.out
-    )
+    //Skip Demux
+    if (params.skip_demux){
+        Assembly_Full(
+            ont_metadata
+        )
+
+        Assembly_Full.out.map{ it -> tuple( it[0], it[1].collect())}
+                .set{trycycler_input}
+
+        ch_trycycler = ont_metadata(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
+
+        Trycycler_Full(
+            ch_trycycler
+        )
+
+        ch_polishing = Trycycler_Full.out
+            .join(ont_metadata, by:0) //And now should be ID, ONT consensus, ONT reads
+
+        Polish(
+            ch_polishing,
+            illumina_metadata
+        )
+
+        if(params.anvio_run){
+            Anvio(
+                Polish.out
+            )
+        }
+    }
+
+    //Only Demux
+    if (params.only_demux){
+        Demux_Full(
+            guppy_dirs,
+            ont_metadata
+        )
+
+        Kraken(
+            Demux_Full.out,
+            'Kraken'
+        )
+    }
+
+    //Only Assembly
+    if (params.only_assembly){
+        Assembly_Full(
+            ont_metadata
+        )
+    }
+
+    //Only Polish
+    if (params.only_polish){
+        Polish(
+            ont_metadata,
+            illumina_metadata
+        )
+    }
 }

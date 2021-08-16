@@ -1,0 +1,2 @@
+sample_id,ont_fastq,illumina_r1,illumina_r2
+MTb1,/path/to/Mtb1_ont.fastq.gz,/path/to/Mtb1_R1.fastq.gz,/path/to/Mtb1_R2.fastq.gz
