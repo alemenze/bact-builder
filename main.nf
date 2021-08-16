@@ -21,15 +21,14 @@ def helpMessage(){
         -profile singularity
 
     Mandatory for full workflow:
-        --input_dir                 Path to directory of .FAST5 files off the ONT device
-        
+        --samplesheet               CSV file with information on the samples (see example)
         -profile                    Currently available for docker (local), singularity (HPC local), slurm (HPC multi node) and GCP (requires credentials)
     
     Guppy parameters:
         --flowcell                  Flowcell type for guppy demux. Defaults to 'FLO-MIN106'
         --kit                       ONT kit for guppy demux. Defaults to 'SQK-LSK109'
         --barcode_kit               Barcode kit used for multiplexing with ONT. Defaults to 'EXP-NBD104 EXP-NBD114'
-        --gpu_active                Default: False. Activates use of GPUs
+        --gpu_active                Default: false. Activates use of GPUs
         --gpus                      Number of GPUs to use. Requires GPUs to use. Defaults to 0
         --cpus                      Number of CPUs to use. Defaults to 2
         --threads                   Number of threads per CPU to use. Defaults to 20
@@ -37,6 +36,11 @@ def helpMessage(){
     Kraken QC:
         --kraken_db                 Default: Standard DB from https://genome-idx.s3://genome-idx/kraken/k2_standard_20201202.tar.gz that can be found https://benlangmead.github.io/aws-indexes/k2
         --kraken_tax_level          Default: S. Options Include D, K, P, C, O, F, G, S for respective taxonomic rank
+
+    Filtering parameters:
+        --min_length                Minimum length of reads for filtlong. Defaults to 1000.
+        --min_mean_q                Minimum quality score for bases for filtlong. Defaults to 70.
+        --genome_size_bytes         Putative (or known) genome size for filtering in bytes. Defaults to 4400000
 
     Assembly parameters:
         --subset_cov                Depth to randomly subset to, integer value (IE 100 for 100X). Defaults to 100
@@ -50,7 +54,8 @@ def helpMessage(){
         --max_add_seq               Default: 10000. Trycycler default is 1000.
         --max_indel_size            Default: 1000. Trycycler default is 250.
 
-    Anvio paramteres:
+    Anvio parameters:
+        --anvio_run                 Defaults to false. If true, it will run Anvio. 
         --project_name              Default: 'ProjectName'. Doesnt effect procesing, more for personalizations
         --min_occurence             Default: 1. Increasing will speed things up, but will exclude genes that occur in <X genomes
         --minbit                    Default: 0.5. Closer to 1 focuses on longer amino acids that are very similar, closer to 0 will focus on shorter amino acids that may match
@@ -60,15 +65,23 @@ def helpMessage(){
         --bin_name                  Default: 'EVERYTHING'. Doesnt effect procesing, more for personalizations or more customized tweaks downstream
         --collection_name           Default: 'Default'. Doesnt effect procesing, more for personalizations or more customized tweaks downstream
 
-
     Optional:
         --outdir                    Directory for output directories/files. Defaults to './results' 
+
+    Slurm Controller:
         --node_partition            Specify the node partition in use for slurm executor. Defaults to 'main' 
+        --gpu_node_partition        Specify the node for GPU access. Defaults to 'gpu'
+        --gpu_clusterOptions        Specify GPU node options. Defaults to "--gres=gpu:1 --constraint=pascal" for dev cluster constraints. 
 
     GCP Options:
         --google_bucket             <gs://bucket/subfolder/> to stage running files. 
         --google_preemptible        Defaults to false. You can change this to true to get better cost savings, but nodes can be taken
-        
+
+    Workflow control:
+        --skip_demux                Defaults to false. If true, it will skip the demultiplexing step. This requires a different input metadata sheet (see examples).
+        --only_demux                Defaults to false. If true, it will only do the demultiplexing. This requires a truncated input metadata sheet (see examples). 
+        --only_assembly             Defaults to false. If true, it will only run the assembly steps. This is often used for those who need manual trycycler steps, and will require a different metadata sheet (see examples) 
+        --only_polish               Defaults to false. If true, it will only run the polishing steps. This requires a different input metadata sheet (see examples).
     """
 
 }
