@@ -6,7 +6,7 @@
                 Workflow for assembling bacterial de novo genomes
                 With multiple layers of assembly and consensus
 ========================================================================================
-                  https://github.com/alemenze/Bact-Builder
+                  https://github.com/alemenze/bact-builder
 */
 
 nextflow.enable.dsl = 2
@@ -16,7 +16,7 @@ def helpMessage(){
 
     Usage:
     
-        nextflow run alemenze/Bact-Builder \
+        nextflow run alemenze/bact-builder \
         --samplesheet ./metadata.csv
         -profile singularity
 
