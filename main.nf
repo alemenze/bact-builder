@@ -125,7 +125,7 @@ if (params.skip_demux){
     Channel
         .fromPath(params.samplesheet)
         .splitCsv(header:true)
-        .map{ row -> tuple(row.sample_id, row.ont_fastq)}
+        .map{ row -> tuple(row.sample_id, file(row.ont_fastq))}
         .set { ont_metadata }
 
     Channel
@@ -156,7 +156,7 @@ if (params.only_assembly){
     Channel
         .fromPath(params.samplesheet)
         .splitCsv(header:true)
-        .map{ row -> tuple(row.sample_id, row.ont_fastq)}
+        .map{ row -> tuple(row.sample_id, file(row.ont_fastq))}
         .set { ont_metadata }
 }
 
@@ -165,7 +165,7 @@ if (params.only_polish){
     Channel
         .fromPath(params.samplesheet)
         .splitCsv(header:true)
-        .map{ row -> tuple(row.sample_id, row.ont_fastq)}
+        .map{ row -> tuple(row.sample_id, file(row.ont_fastq))}
         .set { ont_metadata }
 
     Channel
