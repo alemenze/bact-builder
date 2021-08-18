@@ -192,7 +192,7 @@ include { Kraken } from './modules/subworkflows/kraken'
 
 workflow {
     //Full Workflow
-    if (!params.skip_demux && !params.only_demux && !params.only_assembly && !params.only polish){
+    if (!params.skip_demux && !params.only_demux && !params.only_assembly && !params.only_polish){
         Demux_Full(
             guppy_dirs,
             ont_metadata
