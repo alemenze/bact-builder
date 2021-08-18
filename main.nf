@@ -99,7 +99,7 @@ if (params.help) {
 if (params.samplesheet) {file(params.samplesheet, checkIfExists: true)} else { exit 1, 'Samplesheet file not specified!'}
 
 //Full Workflow Params
-if (!params.skip_demux && !params.only_demux && !params.only_assembly && !params.only_clustering && !params.demux_assembly){
+if (!params.skip_demux && !params.only_demux && !params.only_assembly && !params.only_polish){
     Channel
         .fromPath(params.samplesheet)
         .splitCsv(header:true)
@@ -192,7 +192,7 @@ include { Kraken } from './modules/subworkflows/kraken'
 
 workflow {
     //Full Workflow
-    if (!params.skip_demux && !params.only_demux && !params.only_assembly &&! params.only polish){
+    if (!params.skip_demux && !params.only_demux && !params.only_assembly && !params.only polish){
         Demux_Full(
             guppy_dirs,
             ont_metadata
