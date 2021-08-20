@@ -38,13 +38,9 @@ workflow Assembly_Full {
             'Replicate3'
         )
 
-        temp_assemblies=Channel.empty()
-        temp_assemblies=Assemblies.out.assemblies.join(Assemblies_rep2.out.assemblies)
-        assemblies=Channel.empty()
-        assemblies=temp_assemblies.join(Assemblies_rep3.out.assemblies)
-
-        assemblies.map{ it -> tuple( it[0], it[1].collect())}
-            .set{assemblies_collection}
+        assemblies_collection=Assemblies.out.assemblies
+            .mix(Assemblies_rep2.out.assemblies, Assemblies_rep3.out.assemblies)
+            .groupTuple()
 
     emit:
         assemblies_collection

@@ -207,9 +207,6 @@ workflow {
             Demux_Full.out
         )
 
-        Assembly_Full.out.map{ it -> tuple( it[0], it[1].collect())}
-                .set{trycycler_input}
-
         ch_trycycler = Demux_Full.out.join(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
 
         Trycycler_Full(
@@ -237,10 +234,8 @@ workflow {
             ont_metadata
         )
 
-        Assembly_Full.out.map{ it -> tuple( it[0], it[1].collect())}
-                .set{trycycler_input}
-
-        ch_trycycler = ont_metadata(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
+        ch_trycycler = ont_metadata
+            .join(Assembly_Full.out, by: [0]) //Should be ID, ONT fastqs, assemblies
 
         Trycycler_Full(
             ch_trycycler
