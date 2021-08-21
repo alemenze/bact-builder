@@ -25,13 +25,13 @@ process miniasm_assembly {
 
     output:
         tuple val(meta), path('*.fasta'), emit: assembly
-        tuple val(meta), path('miniasm.assembly.gfa'), emit: gfa
+        tuple val(meta), path('*.assembly.gfa'), emit: gfa
     
     script:
         """
         minimap2 -x ava-ont -t $task.cpus $reads $reads > overlaps.paf
         miniasm -f $reads overlaps.paf > unpolished.gfa
-        minipolish --threads $task.cpus $reads unpolished.gfa > miniasm.assembly.gfa
-        awk '/^S/{print ">"\$2"\\n"\$3}' miniasm.assembly.gfa > miniasm.assembly.fasta
+        minipolish --threads $task.cpus $reads unpolished.gfa > miniasm_${meta}${replicate}.assembly.gfa
+        awk '/^S/{print ">"\$2"\\n"\$3}' miniasm_${meta}${replicate}.assembly.gfa > miniasm_${meta}${replicate}.assembly.fasta
         """
 }

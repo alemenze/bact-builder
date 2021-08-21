@@ -40,7 +40,7 @@ workflow Assembly_Full {
 
         assemblies_collection=Assemblies.out.assemblies
             .mix(Assemblies_rep2.out.assemblies, Assemblies_rep3.out.assemblies)
-            .groupTuple()
+            .groupTuple(by:0)
 
     emit:
         assemblies_collection

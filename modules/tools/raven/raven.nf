@@ -28,7 +28,7 @@ process raven_assembly {
 
     script:
         """
-        raven -t $task.cpus $reads > raven.fasta
+        raven -t $task.cpus $reads > raven_${meta}${replicate}.fasta
         """
 
 }

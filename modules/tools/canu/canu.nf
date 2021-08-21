@@ -28,7 +28,7 @@ process canu_assembly {
 
     script:
         """
-        canu -p ${meta} -d ${meta}_canu genomeSize=${params.assembly_genome_size} useGrid=false -nanopore $reads
+        canu -p ${meta}${replicate} -d ${meta}_canu genomeSize=${params.assembly_genome_size} useGrid=false -nanopore $reads
         """
 
 }
