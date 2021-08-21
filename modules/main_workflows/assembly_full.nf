@@ -41,6 +41,7 @@ workflow Assembly_Full {
         assemblies_collection=Assemblies.out.assemblies
             .mix(Assemblies_rep2.out.assemblies, Assemblies_rep3.out.assemblies)
             .groupTuple(by:0)
+            .map{ it -> tuple(it[0], it[1]+it[2]+it[3]+it[4])}//Merges the 4 types of assemblies out
 
     emit:
         assemblies_collection

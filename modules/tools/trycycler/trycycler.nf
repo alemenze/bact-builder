@@ -6,6 +6,7 @@ nextflow.enable.dsl=2
 // Process definition
 process trycycler_cluster{
     tag "${meta}"
+    label 'process_high'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1
@@ -34,6 +35,7 @@ process trycycler_cluster{
 
 process trycycler_reconcile{
     tag "${meta}"
+    label 'process_high'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1
@@ -60,6 +62,7 @@ process trycycler_reconcile{
 
 process trycycler_msa{
     tag "${meta}"
+    label 'process_medium'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1
@@ -86,6 +89,7 @@ process trycycler_msa{
 
 process trycycler_partition{
     tag "${meta}"
+    label 'process_medium'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1
@@ -112,6 +116,7 @@ process trycycler_partition{
 
 process trycycler_consensus{
     tag "${meta}"
+    label 'process_medium'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1

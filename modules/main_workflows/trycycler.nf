@@ -35,7 +35,7 @@ workflow Trycycler_Full {
             }
             .transpose()
             .join(trycycler_input, by: [0])
-            .map{ it -> tuple(it[0], it[1]), it[3] }
+            .map{ it -> tuple(it[0], it[1], it[3]) }
             .set{reconcile_in}
             
         trycycler_reconcile(
@@ -57,7 +57,7 @@ workflow Trycycler_Full {
             }
             .transpose()
             .join(trycycler_input, by: [0])
-            .map{ it -> tuple(it[0], it[1]), it[3] }
+            .map{ it -> tuple(it[0], it[1], it[3]) }
             .set{partition_in}
 
         trycycler_partition(partition_in)
