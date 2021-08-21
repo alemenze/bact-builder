@@ -56,7 +56,7 @@ process trycycler_reconcile{
     
     script:
         """
-        trycycler reconcile --reads $input_reads --cluster_dir $reads --max_length_diff $params.max_length_diff --min_identity $params.min_identity --max_add_seq $params.max_add_seq --max_indel_size $params.max_indel_size
+        trycycler reconcile --reads $input_reads --cluster_dir $trycycler_assemblies --max_length_diff $params.max_length_diff --min_identity $params.min_identity --max_add_seq $params.max_add_seq --max_indel_size $params.max_indel_size
         """
 }
 
