@@ -30,12 +30,8 @@ workflow Trycycler_Full {
         )
 
         trycycler_cluster.out.cluster_dirs
-            .map{ it ->
-                tuple( it[0], it[1].collate(1))
-            }
-            .transpose()
             .join(trycycler_input, by: [0])
-            .map{ it -> tuple(it[0], it[1], it[3]) }
+            .map{ it -> tuple(it[0], it[1], it[2]) }
             .set{reconcile_in}
             
         trycycler_reconcile(
@@ -43,30 +39,18 @@ workflow Trycycler_Full {
         )
 
         trycycler_reconcile.out.cluster_dirs
-            .map{ it ->
-                tuple( it[0], it[1].collate(1))
-            }
-            .transpose()
             .set{msa_in}
 
         trycycler_msa(msa_in)
 
         trycycler_msa.out.cluster_dirs
-            .map{ it ->
-                tuple( it[0], it[1].collate(1))
-            }
-            .transpose()
             .join(trycycler_input, by: [0])
-            .map{ it -> tuple(it[0], it[1], it[3]) }
+            .map{ it -> tuple(it[0], it[1], it[2]) }
             .set{partition_in}
 
         trycycler_partition(partition_in)
 
         trycycler_partition.out.cluster_dirs
-            .map{ it ->
-                tuple( it[0], it[1].collate(1))
-            }
-            .transpose()
             .set{consensus_in}
 
         trycycler_consensus(consensus_in)
