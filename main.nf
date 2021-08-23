@@ -165,7 +165,7 @@ if (params.only_polish){
     Channel
         .fromPath(params.samplesheet)
         .splitCsv(header:true)
-        .map{ row -> tuple(row.sample_id, file(row.ont_fastq))}
+        .map{ row -> tuple(row.sample_id, file(row.ont_assembly), file(row.ont_fastq))}
         .set { ont_metadata }
 
     Channel
