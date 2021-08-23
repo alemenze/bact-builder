@@ -23,10 +23,10 @@ process medaka {
         tuple val(meta), path(ont_assembly), path(ont_reads)
     
     output:
-        tuple val(meta), path("*consensus.fasta"), emit: consensus
+        tuple val(meta), path("${meta}/*consensus.fasta"), emit: consensus
     
     script:
         """
-        medaka_consensus -i $ont_reads -d $ont_assembly -o . -t $task.cpus -m r941_min_high_g360
+        medaka_consensus -i $ont_reads -d $ont_assembly -o ${meta} -t $task.cpus -m r941_min_high_g360
         """
 }
