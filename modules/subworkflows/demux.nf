@@ -54,16 +54,16 @@ workflow Demux {
       ch_demuxed_filtered,
       'guppy_qc'
     )
-    nanoplot(
-      ch_demuxed_filtered,
-      'guppy_qc'
-    )
     filtlong(
       ch_demuxed_filtered
     )
     fastp_trimmed(
       filtlong.out.fastq,
       'filtlong'
+    )
+    nanoplot(
+      filtlong.out.fastq,
+      'guppy_qc'
     )
     trimmed_fastq = Channel.empty()
     trimmed_fastq=filtlong.out.fastq
