@@ -24,13 +24,13 @@ process flye_assembly {
         val(replicate)
     
     output:
-        tuple val(meta), path("${meta}_flye/flye_${meta}${replicate}.fasta"), emit: assembly
+        tuple val(meta), path("*.fasta"), emit: assembly
         tuple val(meta), path("${meta}_flye/*.gfa"), emit: gfa
     
     script:
         """
         flye --nano-raw $reads --genome-size $params.assembly_genome_size --plasmids --o ${meta}_flye --threads $task.cpus
-        mv ${meta}_flye/assembly.fasta ${meta}_flye/flye_${meta}${replicate}.fasta
+        mv ${meta}_flye/assembly.fasta flye_${meta}${replicate}.fasta
         """
 
 }
