@@ -41,7 +41,6 @@ process guppy_basecaller {
             --save_path . \\
             --records_per_fastq 0 \\
             --compress_fastq \\
-            --config dna_r9.4.1_450bps_fast.cfg \\
             $flowcell \\
             $barcode_kit \\
             $cpu_opts \\
