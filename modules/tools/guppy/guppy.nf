@@ -38,6 +38,7 @@ process guppy_basecaller {
         }
         """
         guppy_basecaller --input_path $reads \\
+            -r \\
             --save_path . \\
             --records_per_fastq 0 \\
             --compress_fastq \\
