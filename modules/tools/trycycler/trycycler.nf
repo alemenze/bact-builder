@@ -6,7 +6,7 @@ nextflow.enable.dsl=2
 // Process definition
 process trycycler{
     tag "${meta}"
-    label 'process_overkill'
+    label 'process_overkill_long'
 
     if (!workflow.profile=='google' && !workflow.profile=='slurm'){
         maxForks 1
