@@ -1,2 +1,2 @@
-sample_id,fast5_dir,ont_barcode,illumina_r1,illumina_r2
+sample_id,fast5_dir,fast5_dirname,ont_barcode,illumina_r1,illumina_r2
 MTb1,/path/to/*.f5,barcode01,/path/to/Mtb1_R1.fastq.gz,/path/to/Mtb1_R2.fastq.gz
