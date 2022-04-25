@@ -10,9 +10,12 @@
 This workflow is built to provide a comprehensive workflow for bacterial de novo genome construction, including multiple assembly methods with consensus generation and polishing. 
 
 ## Metadata
-Setting up this pipline for execution involves establishing an appropriate metadata file. This is a csv file that enables parsing the files correctly together and labelling samples appropriately. 
+Setting up this pipeline for execution involves establishing an appropriate metadata file. This is a csv file that enables parsing the files correctly together and labelling samples appropriately. 
 
 Follow traditional naming restrictions- IE dont use special characters, spaces etc. 
+
+## Tutorial and Wiki
+A tutorial on executing Bact-Builder can be [found here](https://github.com/alemenze/bact-builder/tree/main/docs/execution_tutorial.md), with additional execution information as well as parameter details found on [the Bact-Builder wiki here](https://github.com/alemenze/bact-builder/wiki). 
 
 ## Summary Features:
 ### Basecalling
@@ -28,12 +31,4 @@ Follow traditional naming restrictions- IE dont use special characters, spaces e
 - 3x polishing steps with [Racon](https://github.com/isovic/racon) for ONT reads
 - 1x polishing step with [Medaka](https://github.com/nanoporetech/medaka) for ONT reads
 - 3x poilishing steps with [Pilon](https://github.com/broadinstitute/pilon) for Illumina reads
-### Annotations
-*TBD*
-*Optional Anvio*
 
-## Example Commands
-### Slurm HPC execution
-```
-nohup nextflow -bg run /alemenze/bact-builder -r main --samplesheet ./example_metadata.csv --outdir ./test -profile slurm --node_partition='p_lemenzad -M amareln' --gpu_active --gpus 1 > test.txt
-```
