@@ -16,7 +16,7 @@ process canu_assembly {
         maxForks 1
     }
 
-    container "staphb/canu-racon"
+    container "staphb/canu-racon:2.0"
 
     input:
         tuple val(meta), path(reads)

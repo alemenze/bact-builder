@@ -13,9 +13,9 @@ process guppy_basecaller {
         saveAs: { filename -> filename }
 
     if (params.gpu_active){
-        container 'genomicpariscentre/guppy-gpu:4.2.2'
+        container 'genomicpariscentre/guppy-gpu:6.0.1'
     } else {
-        container 'genomicpariscentre/guppy:4.2.2'
+        container 'genomicpariscentre/guppy:6.0.1'
     }
 
     input:
