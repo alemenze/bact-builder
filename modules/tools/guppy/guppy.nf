@@ -54,7 +54,7 @@ process guppy_basecaller {
             for dir in pass/barcode*/
             do
                 dir=\${dir%*/}
-                cat \$dir/*.fastq.gz > ./fastq/${reads}--\$dir.fastq.gz
+                cat pass/\$dir/*.fastq.gz > ./fastq/${reads}--\$dir.fastq.gz
             done
         else
             cat pass/*.fastq.gz > ./fastq/output.fastq.gz
