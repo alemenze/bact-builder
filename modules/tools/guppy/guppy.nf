@@ -49,15 +49,16 @@ process guppy_basecaller {
             
         # have to combine fastqs
         mkdir fastq
+        cd pass
         if [ "\$(find . -type d -name "barcode*" )" != "" ]
         then
-            for dir in pass/barcode*/
+            for dir in barcode*/
             do
                 dir=\${dir%*/}
-                cat pass/\$dir/*.fastq.gz > ./fastq/${reads}--\$dir.fastq.gz
+                cat \$dir/*.fastq.gz > ../fastq/${reads}--\$dir.fastq.gz
             done
         else
-            cat pass/*.fastq.gz > ./fastq/output.fastq.gz
+            cat *.fastq.gz > ../fastq/output.fastq.gz
         fi
         """
 }
