@@ -17,7 +17,7 @@ process flye_assembly {
         overwrite: true,
         saveAs: { filename -> filename }
 
-    container "staphb/flye:2.8"
+    container "staphb/flye:2.9"
 
     input:
         tuple val(meta), path(reads)

@@ -13,9 +13,9 @@ process guppy_basecaller {
         saveAs: { filename -> filename }
 
     if (params.gpu_active){
-        container 'genomicpariscentre/guppy-gpu:4.2.2'
+        container 'genomicpariscentre/guppy-gpu:6.0.1'
     } else {
-        container 'genomicpariscentre/guppy:4.2.2'
+        container 'genomicpariscentre/guppy:6.0.1'
     }
 
     input:
@@ -49,15 +49,16 @@ process guppy_basecaller {
             
         # have to combine fastqs
         mkdir fastq
+        cd pass
         if [ "\$(find . -type d -name "barcode*" )" != "" ]
         then
             for dir in barcode*/
             do
                 dir=\${dir%*/}
-                cat \$dir/*.fastq.gz > ./fastq/${reads}--\$dir.fastq.gz
+                cat \$dir/*.fastq.gz > ../fastq/${reads}--\$dir.fastq.gz
             done
         else
-            cat *.fastq.gz > ./fastq/output.fastq.gz
+            cat *.fastq.gz > ../fastq/output.fastq.gz
         fi
         """
 }
