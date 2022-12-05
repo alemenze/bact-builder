@@ -1,4 +1,5 @@
 # Bact-Builder
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7401329.svg)](https://doi.org/10.5281/zenodo.7401329)
 ![GitHub last commit](https://img.shields.io/github/last-commit/alemenze/bact-builder)
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A520.11.0--edge-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
